@@ -51,14 +51,10 @@ namespace PlayerScripts
         {
             // TODO: write concrete states
             AddState(new PlayerGroundedState(_player, this));
-            //AddState(new Moving(_player,this));
             AddState(new Jump(_player, this));
             AddState(new FreeFall(_player, this));
-            //AddState(new Dash(_player, this));
             AddState(new WallSlide(_player, this));
             AddState(new WallJump(_player, this));
-            //AddState(new MeleeAttack(_player, this));
-            //AddState(new OverBoost(_player, this));
         }
         public void Initializer(BaseState startState)
         {
