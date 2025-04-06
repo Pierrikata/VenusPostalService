@@ -208,5 +208,15 @@ namespace PlayerScripts
                 GrabbedObject = null;
             }
         }
+
+        void LoadGrabbedObject()
+        {
+            if (GrabbedObject != null)
+            {
+                GrabbedObjects.Add(GrabbedObject);
+                GrabbedObject.transform.SetParent(null);
+                GrabbedObject = null;
+            }
+        }
     }
 }
