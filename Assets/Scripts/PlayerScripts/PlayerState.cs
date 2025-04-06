@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using GeneralInterfaces;
 using JetBrains.Annotations;
 using StateMachineScripts;
@@ -15,6 +16,8 @@ namespace PlayerScripts
         protected static Vector2 MoveInput, Movement;
         protected float StateTimer;
         protected Vector3 Diff; // for flight vehicle embark
+        protected GameObject GrabbedObject;
+        protected List<GameObject> GrabbedObjects;
         
         private bool _canScoutAhead;
         private float _rotRadZ, _rotDegZ;
@@ -23,7 +26,8 @@ namespace PlayerScripts
         protected Camera Camera;
         #endregion
         #region Properties
-        public PlayerState([NotNull] Player player, [NotNull] PlayerStateMachine stateMachine)
+
+        protected PlayerState([NotNull] Player player, [NotNull] PlayerStateMachine stateMachine)
         {
             Player = player ?? throw new ArgumentNullException(nameof(player));
             StateMachine = stateMachine ?? throw new ArgumentNullException(nameof(stateMachine));
@@ -50,8 +54,11 @@ namespace PlayerScripts
 
         public override void FixedUpdate()
         {
+            StateTimer -= Time.deltaTime;
             FlipController();
             Locomotion();
+            
+            if(Input.GetKeyDown(KeyCode.F)) GrabObject();
             
             if (_canScoutAhead)
                 ScoutAhead();
@@ -176,6 +183,30 @@ namespace PlayerScripts
             Player.transform.localRotation = _rotDegZ is < -90 or > 90
                 ? Quaternion.Euler(180, 180, _rotDegZ)
                 : Quaternion.Euler(0, 0, _rotDegZ);
+        }
+
+        void GrabObject()
+        {
+            if (!Player.ParcelInfo)
+                return;
+            var parcelBody = Player.ParcelInfo.gameObject.GetComponent<Rigidbody2D>();
+            
+            // grab
+            if (!GrabbedObject)
+            {
+                GrabbedObject = Player.ParcelInfo.gameObject;
+                parcelBody.bodyType = RigidbodyType2D.Kinematic;
+                GrabbedObject.transform.position = Player.holdPoint.position;
+                GrabbedObject.transform.SetParent(Player.holdPoint);
+            }
+            // release
+            else
+            {
+                parcelBody.bodyType = RigidbodyType2D.Dynamic;
+                parcelBody.linearVelocity = Player.Rb.linearVelocity;
+                GrabbedObject.transform.SetParent(null);
+                GrabbedObject = null;
+            }
         }
     }
 }

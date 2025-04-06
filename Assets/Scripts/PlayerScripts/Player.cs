@@ -1,8 +1,7 @@
-using System;
+using System.Collections.Generic;
 using StateMachineScripts;
 using Unity.Cinemachine;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace PlayerScripts
 {
@@ -16,22 +15,19 @@ namespace PlayerScripts
             minOrthoSize = 8, maxOrthoSize = 30, lookAheadDistance = 2;
         protected internal float CurrentOrthoSize;
         protected internal Vector3 CurrentTargetOffset;
-        
-        [Header("Movement")]
-        [SerializeField] internal float maxSpeed = 22,
-            jumpScale,
-            variableJumpAmp,
-            wallJumpAmp,
-            buttonPressedWindow,
-            runAcceleration = 3,
-            runDeceleration = 4,
-            accInAir = .15f,
-            velocityPower,
-            flightSpeed;
+
+        [Header("Movement")] [SerializeField] internal float maxSpeed = 22;
+        [SerializeField] internal float jumpScale, variableJumpAmp, wallJumpAmp,
+            buttonPressedWindow, runAcceleration = 3, runDeceleration = 4,
+            accInAir = .15f, velocityPower, flightSpeed;
         
         [Header("Collisions")] [SerializeField] private LayerMask whatIsGround;
+        [SerializeField] private LayerMask whatToLift;
         [SerializeField] internal Transform groundCheck, wallCheck;
         [SerializeField] private float groundCheckRadius, wallCheckRadius;
+
+        [Header("HandlingParcels")] [SerializeField] internal List<Transform> carryPoints;
+        [SerializeField] internal Transform holdPoint;
         
         #endregion
         #region Components
@@ -56,8 +52,15 @@ namespace PlayerScripts
         }
 
         // Update is called once per frame
-        void Update() { _stateMachine.Update(); }
-        private void FixedUpdate() { _stateMachine.FixedUpdate(); }
+        void Update()
+        {
+            _stateMachine.Update();
+        }
+
+        private void FixedUpdate()
+        {
+            _stateMachine.FixedUpdate();
+        }
         
         #endregion
         public BaseState GetCurrentState() { return _stateMachine.CurrentState; }
@@ -84,6 +87,7 @@ namespace PlayerScripts
 
         public bool IsGrounded => Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, whatIsGround);
         public bool OnTheWall => Physics2D.OverlapCircle(wallCheck.position, wallCheckRadius, whatIsGround);
+        public Collider2D ParcelInfo => Physics2D.OverlapCircle(wallCheck.position, wallCheckRadius, whatToLift);
         private void OnDrawGizmos()
         {
             Gizmos.DrawWireSphere(wallCheck.position, wallCheckRadius);
