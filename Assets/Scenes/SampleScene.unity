@@ -774,16 +774,16 @@ MonoBehaviour:
       Enabled: 0
       Size: {x: 0.2, y: 0.2}
     HardLimits:
-      Enabled: 0
-      Size: {x: 0.8, y: 0.8}
+      Enabled: 1
+      Size: {x: 0.9, y: 0.9}
       Offset: {x: 0, y: 0}
   CenterOnActivate: 1
   TargetOffset: {x: 0, y: 0, z: 0}
   Damping: {x: 1, y: 1, z: 1}
   Lookahead:
-    Enabled: 0
-    Time: 0
-    Smoothing: 0
+    Enabled: 1
+    Time: 0.25
+    Smoothing: 0.1
     IgnoreY: 0
 --- !u!114 &356876744
 MonoBehaviour:
@@ -1272,8 +1272,8 @@ MonoBehaviour:
   zoomInSpeed: 0.25
   minOrthoSize: 8
   maxOrthoSize: 30
-  lookAheadDistance: 2
-  maxSpeed: 22
+  lookAheadDistance: 11
+  maxSpeed: 33
   jumpScale: 11
   variableJumpAmp: 2
   wallJumpAmp: 2
@@ -1288,7 +1288,7 @@ MonoBehaviour:
     m_Bits: 8
   groundCheck: {fileID: 1931755568}
   wallCheck: {fileID: 113240823}
-  groundCheckRadius: 0.1
+  groundCheckRadius: 0.475
   wallCheckRadius: 0.1
 --- !u!50 &530437116
 Rigidbody2D:
@@ -1305,7 +1305,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 3
+  m_GravityScale: 3.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -1315,7 +1315,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
 --- !u!70 &530437117
 CapsuleCollider2D:
@@ -4072,7 +4072,7 @@ Transform:
   m_GameObject: {fileID: 1931755567}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.99, z: 0}
+  m_LocalPosition: {x: 0, y: -0.533, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
